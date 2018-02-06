@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Wayv Drivers QA</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="request_code">Request Code</string>
+    <string name="logo">logo</string>
+    <string name="enter_verification_code"><b>Enter the verification code sent via SMS to log in.</b></string>
+    <string name="didnt_receive_a_code">Didn\'t receive a code?</string>
+    <string name="resend"><b><u>Resend</u></b></string>
+    <string name="back">back</string>
 </resources>

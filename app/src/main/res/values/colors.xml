@@ -2,5 +2,12 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ff4081</color>
+
+    <color name="appBlue">#1bbcff</color>
+    <color name="appRed">#f44488</color>
+    <color name="appOrange">#eb9032</color>
+    <color name="appGreen">#66CC66</color>
+    <color name="appYellow">#ffaf2c</color>
+    <color name="appPurple">#7554ee</color>
 </resources>
