@@ -4,9 +4,18 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.view.View
+import com.ladevelopers.wayv.drivers.qa.contracts.LoginService
 import com.ladevelopers.wayv.drivers.qa.helpers.TelephonyHelper
+import com.ladevelopers.wayv.drivers.qa.infrastructure.App
+import javax.inject.Inject
 
-internal class LoginViewModel : ViewModel() {
+class LoginViewModel : ViewModel() {
+
+    init {
+        App.component.inject(this)
+    }
+
+    @Inject lateinit var loginService: LoginService
 
     val phone: ObservableField<String> = object : ObservableField<String>() {
         override fun set(value: String?) {
@@ -32,7 +41,8 @@ internal class LoginViewModel : ViewModel() {
     val code3 = ObservableField<String>()
     val code4 = ObservableField<String>()
 
-    fun requestCode(view: View) {
+    fun requestCode() {
+        loginService.requestCode(TelephonyHelper.unformatPhone(phone.get()))
         showCodeEntering.set(true)
 
 //        AlertDialog.Builder(view.context)

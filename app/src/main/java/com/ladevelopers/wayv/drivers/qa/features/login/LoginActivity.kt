@@ -1,5 +1,6 @@
 package com.ladevelopers.wayv.drivers.qa.features.login
 
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -14,6 +15,7 @@ import com.ladevelopers.wayv.drivers.qa.databinding.ActivityLoginBinding
 import com.ladevelopers.wayv.drivers.qa.helpers.moveCursorToEndAfterTextChanged
 import com.ladevelopers.wayv.drivers.qa.helpers.setFadeAnimation
 import kotlinx.android.synthetic.main.activity_login.*
+import javax.inject.Inject
 
 
 class LoginActivity : AppCompatActivity() {

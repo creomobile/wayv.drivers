@@ -100,14 +100,13 @@
                     android:layout_marginTop="16dp"
                     android:background="@android:color/white"
                     android:enabled="@{vm.canRequestCode}"
-                    android:onClick="@{(view) -> vm.requestCode(view)}"
+                    android:onClick="@{() -> vm.requestCode()}"
                     android:text="@string/request_code"
                     android:textColor="@android:color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.452"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardView2" />
-                <!--android:onClick="@{(view) -> vm.requestCode(view)}"-->
 
             </LinearLayout>
 
