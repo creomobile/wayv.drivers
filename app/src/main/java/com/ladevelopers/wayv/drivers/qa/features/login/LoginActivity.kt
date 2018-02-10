@@ -1,6 +1,5 @@
 package com.ladevelopers.wayv.drivers.qa.features.login
 
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -14,19 +13,28 @@ import com.ladevelopers.wayv.drivers.qa.R
 import com.ladevelopers.wayv.drivers.qa.databinding.ActivityLoginBinding
 import com.ladevelopers.wayv.drivers.qa.helpers.moveCursorToEndAfterTextChanged
 import com.ladevelopers.wayv.drivers.qa.helpers.setFadeAnimation
+import com.ladevelopers.wayv.drivers.qa.infrastructure.App
+import com.ladevelopers.wayv.drivers.qa.infrastructure.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-
 class LoginActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (application as App).component.inject(this)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        viewModel = ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(LoginViewModel::class.java)
         binding.vm = viewModel
         binding.phoneText.moveCursorToEndAfterTextChanged()
         binding.viewSwitcher.setFadeAnimation()

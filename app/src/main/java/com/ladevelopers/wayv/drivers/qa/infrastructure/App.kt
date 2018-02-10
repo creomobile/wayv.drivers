@@ -5,9 +5,7 @@ import com.ladevelopers.wayv.drivers.qa.infrastructure.modules.AppModule
 
 class App : Application() {
 
-    companion object {
-        lateinit var component: AppComponent
-    }
+    lateinit var component: AppComponent
 
     private fun initComponent(): AppComponent = DaggerAppComponent
             .builder()

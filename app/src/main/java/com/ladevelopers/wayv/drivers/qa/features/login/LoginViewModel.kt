@@ -9,13 +9,7 @@ import com.ladevelopers.wayv.drivers.qa.helpers.TelephonyHelper
 import com.ladevelopers.wayv.drivers.qa.infrastructure.App
 import javax.inject.Inject
 
-class LoginViewModel : ViewModel() {
-
-    init {
-        App.component.inject(this)
-    }
-
-    @Inject lateinit var loginService: LoginService
+class LoginViewModel @Inject constructor(private val loginService: LoginService) : ViewModel() {
 
     val phone: ObservableField<String> = object : ObservableField<String>() {
         override fun set(value: String?) {
