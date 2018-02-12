@@ -4,4 +4,3 @@ data class EmployeeRoleDto(
         val id: Int?,
         val name: String
 )
-

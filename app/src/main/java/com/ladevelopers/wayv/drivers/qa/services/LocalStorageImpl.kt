@@ -25,4 +25,10 @@ class LocalStorageImpl(context: Context) : LocalStorage {
     }
 
     override fun contains(key: String) = preferences.contains(key)
+
+    override fun remove(key: String) {
+        val editor = preferences.edit()
+        editor.remove(key)
+        editor.apply()
+    }
 }

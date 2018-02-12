@@ -1,22 +1,27 @@
 package com.ladevelopers.wayv.drivers.qa.services
 
-import com.ladevelopers.wayv.drivers.qa.contracts.AuthApiService
-import com.ladevelopers.wayv.drivers.qa.contracts.AuthService
-import com.ladevelopers.wayv.drivers.qa.contracts.requestCode
-import com.ladevelopers.wayv.drivers.qa.contracts.signin
-import io.reactivex.schedulers.Schedulers
+import com.ladevelopers.wayv.drivers.qa.contracts.*
+import com.ladevelopers.wayv.drivers.qa.dto.SignedInDto
+import com.ladevelopers.wayv.drivers.qa.helpers.Optional
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class AuthServiceImpl
-@Inject constructor(private val authApiService: AuthApiService)
-    : AuthService {
+@Inject constructor(private val localStorage: LocalStorage) : AuthService {
 
-//    override fun requestCode(phoneNumber: String) = authApiService
-//            .requestCode(phoneNumber)
-//            //.observeOn(AndroidSchedulers.mainThread())
-//            .subscribeOn(Schedulers.io())
-//
-//    override fun signin(otp: String, phone: String) = authApiService
-//            .signin(otp, phone)
-//            .subscribeOn(Schedulers.io())
+    private val authKey = "authInfo"
+    private val subject = BehaviorSubject.createDefault(
+            Optional(localStorage.getOrNull<SignedInDto>(authKey)))
+    override val authInfo = this.subject!!
+    override val currentAuthInfo: SignedInDto? get() = subject.value.value
+
+    override fun logout() {
+        localStorage.remove(authKey)
+        subject.onNext(Optional(null))
+    }
+
+    override fun login(authInfo: SignedInDto) {
+        localStorage.set(authKey, authInfo)
+        subject.onNext(Optional(authInfo))
+    }
 }
