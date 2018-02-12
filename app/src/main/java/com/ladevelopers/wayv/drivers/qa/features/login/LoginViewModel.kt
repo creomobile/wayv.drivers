@@ -3,14 +3,28 @@ package com.ladevelopers.wayv.drivers.qa.features.login
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import android.view.View
-import com.ladevelopers.wayv.drivers.qa.contracts.LoginService
+import com.google.gson.Gson
+import com.ladevelopers.wayv.drivers.qa.contracts.AuthService
+import com.ladevelopers.wayv.drivers.qa.contracts.ErrorHandler
+import com.ladevelopers.wayv.drivers.qa.dto.CompanyLicenseDto
+import com.ladevelopers.wayv.drivers.qa.dto.LicenseType
+import com.ladevelopers.wayv.drivers.qa.dto.LocationDto
+import com.ladevelopers.wayv.drivers.qa.helpers.ProcessIndicator
 import com.ladevelopers.wayv.drivers.qa.helpers.TelephonyHelper
-import com.ladevelopers.wayv.drivers.qa.infrastructure.App
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.rx2.await
 import javax.inject.Inject
+import com.google.gson.GsonBuilder
 
-class LoginViewModel @Inject constructor(private val loginService: LoginService) : ViewModel() {
 
+class LoginViewModel @Inject constructor(
+        private val authService: AuthService,
+        private val errorHandler: ErrorHandler)
+    : ViewModel() {
+
+    val codeRequestBusy = ProcessIndicator()
+    private lateinit var codeRequestClosable: AutoCloseable
     val phone: ObservableField<String> = object : ObservableField<String>() {
         override fun set(value: String?) {
             super.set(TelephonyHelper.formatPhone(value))
@@ -35,16 +49,19 @@ class LoginViewModel @Inject constructor(private val loginService: LoginService)
     val code3 = ObservableField<String>()
     val code4 = ObservableField<String>()
 
-    fun requestCode() {
-        loginService.requestCode(TelephonyHelper.unformatPhone(phone.get()))
-        showCodeEntering.set(true)
-
-//        AlertDialog.Builder(view.context)
-//                .setTitle("LoginVm")
-//                .setMessage("Request '${TelephonyHelper.unformatPhone(phone.get())}'...")
-//                .setIcon(android.R.drawable.ic_dialog_info)
-//                .show()
+    fun requestCode() = launch(UI) {
+        try {
+            codeRequestClosable = codeRequestBusy.begin()
+            authService.requestCode(TelephonyHelper.unformatPhone(phone.get())).await()
+            showCodeEntering.set(true)
+        } catch (ex: Exception) {
+            errorHandler.handle(ex)
+            codeRequestClosable.close()
+        }
     }
 
-    fun back() = showCodeEntering.set(false)
+    fun back() {
+        codeRequestClosable.close()
+        showCodeEntering.set(false)
+    }
 }
