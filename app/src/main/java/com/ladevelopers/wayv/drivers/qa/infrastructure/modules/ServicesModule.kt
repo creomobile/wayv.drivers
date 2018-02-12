@@ -37,6 +37,5 @@ class ServicesModule {
 
     @Provides
     @Singleton
-    fun provideLoginService(authApiService: AuthApiService): AuthService =
-            AuthServiceImpl(authApiService)
+    fun provideLoginService(localStorage: LocalStorage): AuthService = AuthServiceImpl(localStorage)
 }
