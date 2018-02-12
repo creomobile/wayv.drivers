@@ -3,28 +3,26 @@ package com.ladevelopers.wayv.drivers.qa.features.login
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import com.google.gson.Gson
-import com.ladevelopers.wayv.drivers.qa.contracts.AuthService
-import com.ladevelopers.wayv.drivers.qa.contracts.ErrorHandler
-import com.ladevelopers.wayv.drivers.qa.dto.CompanyLicenseDto
-import com.ladevelopers.wayv.drivers.qa.dto.LicenseType
-import com.ladevelopers.wayv.drivers.qa.dto.LocationDto
+import com.ladevelopers.wayv.drivers.qa.contracts.*
+import com.ladevelopers.wayv.drivers.qa.dto.SignedInDto
 import com.ladevelopers.wayv.drivers.qa.helpers.ProcessIndicator
 import com.ladevelopers.wayv.drivers.qa.helpers.TelephonyHelper
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.CompletableDeferred
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.rx2.await
+import kotlinx.coroutines.experimental.rx2.awaitSingle
 import javax.inject.Inject
-import com.google.gson.GsonBuilder
-
 
 class LoginViewModel @Inject constructor(
-        private val authService: AuthService,
+        private val authApiService: AuthApiService,
         private val errorHandler: ErrorHandler)
     : ViewModel() {
 
     val codeRequestBusy = ProcessIndicator()
     private lateinit var codeRequestClosable: AutoCloseable
+    val signinBusy = ProcessIndicator()
     val phone: ObservableField<String> = object : ObservableField<String>() {
         override fun set(value: String?) {
             super.set(TelephonyHelper.formatPhone(value))
@@ -36,12 +34,16 @@ class LoginViewModel @Inject constructor(
     val code: ObservableField<String> = object : ObservableField<String>() {
         override fun set(value: String?) {
             super.set(value)
+
             fun setChar(observable: ObservableField<String>, index: Int) =
                     observable.set(if (value?.length ?: 0 > index) value!![index].toString() else "")
             setChar(code1, 0)
             setChar(code2, 1)
             setChar(code3, 2)
             setChar(code4, 3)
+
+            if (value?.length == 4)
+                signin()
         }
     }
     val code1 = ObservableField<String>()
@@ -49,10 +51,17 @@ class LoginViewModel @Inject constructor(
     val code3 = ObservableField<String>()
     val code4 = ObservableField<String>()
 
+    val result = CompletableDeferred<SignedInDto>()
+
     fun requestCode() = launch(UI) {
         try {
             codeRequestClosable = codeRequestBusy.begin()
-            authService.requestCode(TelephonyHelper.unformatPhone(phone.get())).await()
+            authApiService
+                    .requestCode(TelephonyHelper.unformatPhone(phone.get()))
+                    .subscribeOn(Schedulers.io())
+                    //.observeOn(AndroidSchedulers.mainThread())
+                    .await()
+            code.set(null)
             showCodeEntering.set(true)
         } catch (ex: Exception) {
             errorHandler.handle(ex)
@@ -63,5 +72,21 @@ class LoginViewModel @Inject constructor(
     fun back() {
         codeRequestClosable.close()
         showCodeEntering.set(false)
+    }
+
+    fun signin() = launch(UI) {
+        try {
+            signinBusy.begin().use {
+                val dto = authApiService
+                        .signin(code.get(), TelephonyHelper.unformatPhone(phone.get()))
+                        .subscribeOn(Schedulers.io())
+                        //.observeOn(AndroidSchedulers.mainThread())
+                        .awaitSingle()
+                result.complete(dto)
+            }
+        } catch (ex: Exception) {
+            errorHandler.handle(ex)
+            back()
+        }
     }
 }

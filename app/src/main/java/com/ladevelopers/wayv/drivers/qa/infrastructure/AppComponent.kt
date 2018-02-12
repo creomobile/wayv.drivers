@@ -12,6 +12,5 @@ import javax.inject.Singleton
     ServicesModule::class,
     ViewModelModule::class])
 interface AppComponent {
-    fun inject(target: LoginViewModel)
     fun inject(target: LoginActivity)
 }

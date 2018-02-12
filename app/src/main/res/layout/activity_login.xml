@@ -111,7 +111,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -253,6 +252,14 @@
                     android:labelFor="@+id/codeText"
                     android:maxLength="4"
                     android:text="@={vm.code}" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:indeterminateTint="@android:color/white"
+                    android:visibility="@{vm.signinBusy ? View.VISIBLE : View.GONE}" />
             </LinearLayout>
 
         </ViewSwitcher>
