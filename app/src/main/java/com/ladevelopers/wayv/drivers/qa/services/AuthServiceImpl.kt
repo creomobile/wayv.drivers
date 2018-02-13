@@ -1,6 +1,8 @@
 package com.ladevelopers.wayv.drivers.qa.services
 
-import com.ladevelopers.wayv.drivers.qa.contracts.*
+import com.ladevelopers.wayv.drivers.qa.contracts.AuthService
+import com.ladevelopers.wayv.drivers.qa.contracts.LocalStorage
+import com.ladevelopers.wayv.drivers.qa.contracts.getOrNull
 import com.ladevelopers.wayv.drivers.qa.dto.SignedInDto
 import com.ladevelopers.wayv.drivers.qa.helpers.Optional
 import io.reactivex.subjects.BehaviorSubject
@@ -8,7 +10,6 @@ import javax.inject.Inject
 
 class AuthServiceImpl
 @Inject constructor(private val localStorage: LocalStorage) : AuthService {
-
     private val authKey = "authInfo"
     private val subject = BehaviorSubject.createDefault(
             Optional(localStorage.getOrNull<SignedInDto>(authKey)))

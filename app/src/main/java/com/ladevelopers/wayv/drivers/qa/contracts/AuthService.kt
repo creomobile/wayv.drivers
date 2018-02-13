@@ -10,3 +10,7 @@ interface AuthService {
     fun logout()
     fun login(authInfo: SignedInDto)
 }
+
+val AuthService.token: String
+    get() = this.currentAuthInfo?.auth?.token
+            ?: throw throw IllegalStateException("Cannot get auth token")
