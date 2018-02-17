@@ -1,8 +1,12 @@
 package com.ladevelopers.wayv.drivers.qa.features.login
 
 import android.arch.lifecycle.ViewModel
+import android.content.Context
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import com.ladevelopers.wayv.drivers.qa.contracts.*
 import com.ladevelopers.wayv.drivers.qa.dto.SignedInDto
 import com.ladevelopers.wayv.drivers.qa.helpers.ProcessIndicator
@@ -17,7 +21,8 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
         private val authApiService: AuthApiService,
-        private val errorHandler: ErrorHandler)
+        private val errorHandler: ErrorHandler,
+        private val context: Context)
     : ViewModel() {
 
     val codeRequestBusy = ProcessIndicator()
@@ -56,12 +61,17 @@ class LoginViewModel @Inject constructor(
     fun requestCode() = launch(UI) {
         try {
             codeRequestClosable = codeRequestBusy.begin()
-            authApiService
+            val result = authApiService
                     .requestCode(TelephonyHelper.unformatPhone(phone.get()))
                     .subscribeOn(Schedulers.io())
                     //.observeOn(AndroidSchedulers.mainThread())
-                    .await()
+                    .awaitSingle()
+
             code.set(null)
+
+            if (result.otp.isNotEmpty())
+                Toast.makeText(this@LoginViewModel.context, result.otp, Toast.LENGTH_SHORT).show()
+
             showCodeEntering.set(true)
         } catch (ex: Exception) {
             errorHandler.handle(ex)

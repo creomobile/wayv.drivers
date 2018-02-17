@@ -7,8 +7,11 @@ import retrofit2.http.*
 
 interface AuthApiService {
 
+    //@POST("auth/otp")
+    //fun requestCode(@Body dto: OtpDto): Completable
+
     @POST("auth/otp")
-    fun requestCode(@Body dto: OtpDto): Completable
+    fun requestCode(@Body dto: OtpDto): Observable<OtpResultDto>
 
     @POST("auth/otpsignin")
     fun signin(@Body dto: OtpSignInDto): Observable<SignedInDto>

@@ -13,4 +13,5 @@ import javax.inject.Singleton
     ViewModelModule::class])
 interface AppComponent {
     fun inject(target: LoginActivity)
+    fun inject(target: SplashActivity)
 }

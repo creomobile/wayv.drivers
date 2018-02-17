@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ladevelopers.wayv.drivers.qa">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".infrastructure.App"
@@ -14,10 +15,10 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".infrastructure.SplashActivity"
+            android:noHistory="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,6 +30,7 @@
         </activity>
         <activity
             android:name=".features.login.LoginActivity"
+            android:noHistory="true"
             android:theme="@style/LoginTheme" />
     </application>
 

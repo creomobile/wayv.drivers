@@ -2,6 +2,7 @@ package com.ladevelopers.wayv.drivers.qa.features.login
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -10,18 +11,24 @@ import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.ladevelopers.wayv.drivers.qa.R
+import com.ladevelopers.wayv.drivers.qa.contracts.AuthService
 import com.ladevelopers.wayv.drivers.qa.databinding.ActivityLoginBinding
+import com.ladevelopers.wayv.drivers.qa.features.main.MainActivity
 import com.ladevelopers.wayv.drivers.qa.helpers.moveCursorToEndAfterTextChanged
 import com.ladevelopers.wayv.drivers.qa.helpers.setFadeAnimation
 import com.ladevelopers.wayv.drivers.qa.infrastructure.App
 import com.ladevelopers.wayv.drivers.qa.infrastructure.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var authService: AuthService
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
@@ -57,6 +64,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         setFocus(binding.phoneText)
+
+        initAuth()
+    }
+
+    private fun initAuth() = launch(UI) {
+        val dto = viewModel.result.await()
+        authService.signin(dto)
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
     }
 
     private fun setFocus(editText: EditText) {

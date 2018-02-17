@@ -16,12 +16,12 @@ class AuthServiceImpl
     override val authInfo = this.subject!!
     override val currentAuthInfo: SignedInDto? get() = subject.value.value
 
-    override fun logout() {
+    override fun signout() {
         localStorage.remove(authKey)
         subject.onNext(Optional(null))
     }
 
-    override fun login(authInfo: SignedInDto) {
+    override fun signin(authInfo: SignedInDto) {
         localStorage.set(authKey, authInfo)
         subject.onNext(Optional(authInfo))
     }
