@@ -1,6 +1,7 @@
 package com.ladevelopers.wayv.drivers.qa.infrastructure.modules
 
 import android.arch.lifecycle.*
+import com.ladevelopers.wayv.drivers.qa.features.account.AccountViewModel
 import com.ladevelopers.wayv.drivers.qa.features.login.LoginViewModel
 import com.ladevelopers.wayv.drivers.qa.infrastructure.*
 import dagger.*
@@ -13,6 +14,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     abstract fun bindLoginViewModel(loginViewModel: LoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AccountViewModel::class)
+    abstract fun bindAccountViewModel(accountViewModel: AccountViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory( factory: ViewModelFactory):

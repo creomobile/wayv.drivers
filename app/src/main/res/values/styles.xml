@@ -11,7 +11,7 @@
         <item name="colorAccent">@color/appPurple</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/appPurple</item>
         <item name="colorPrimaryDark">@color/appPurple</item>
         <item name="colorAccent">@color/appPurple</item>

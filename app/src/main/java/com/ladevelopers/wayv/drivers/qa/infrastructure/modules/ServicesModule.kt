@@ -32,7 +32,7 @@ class ServicesModule {
 
     @Provides
     @Named(NAME_BASE_URL)
-    fun provideBaseUrl() = "https://drop-api-qa.azurewebsites.net/"
+    fun provideBaseUrl() = "https://api-qa.wayv.com/"
 
     @Provides
     @Singleton
