@@ -17,4 +17,7 @@
     <string name="phone">Phone</string>
     <string name="driver_license">Driver License</string>
     <string name="logout">Logout</string>
+    <string name="location">Location</string>
+    <string name="your_roles">Your Roles</string>
+    <string name="call">Call</string>
 </resources>

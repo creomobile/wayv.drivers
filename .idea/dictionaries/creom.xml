@@ -2,6 +2,7 @@
   <dictionary name="creom">
     <words>
       <w>gson</w>
+      <w>mailto</w>
       <w>signin</w>
       <w>signout</w>
       <w>wayv</w>

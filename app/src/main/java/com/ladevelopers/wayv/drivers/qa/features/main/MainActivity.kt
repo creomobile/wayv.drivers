@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import com.ladevelopers.wayv.drivers.qa.R
 import com.ladevelopers.wayv.drivers.qa.features.account.AccountFragment
 import com.ladevelopers.wayv.drivers.qa.features.dashboard.DashboardFragment
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
 
         version_text.text = packageManager.getPackageInfo(packageName, 0).versionName
 
+        val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
+
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager
                 .beginTransaction()
-                .add(R.id.content_frame, DashboardFragment())
+                .add(R.id.content_frame, DashboardFragment.newInstance())
                 .commit()
 
         nav_view.setNavigationItemSelectedListener { menuItem ->

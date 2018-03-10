@@ -22,5 +22,7 @@ data class LocationDto(
         override val phone: String?,
         @SerializedName("lat") override val latitude: Double?,
         @SerializedName("lng") override val longitude: Double?
-) : LocationDtoBase()
+) : LocationDtoBase() {
+    override fun toString() = "$zipCode $streetAddress $city $state"
+}
 

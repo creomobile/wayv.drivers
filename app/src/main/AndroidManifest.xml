@@ -4,6 +4,7 @@
     package="com.ladevelopers.wayv.drivers.qa">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".infrastructure.App"

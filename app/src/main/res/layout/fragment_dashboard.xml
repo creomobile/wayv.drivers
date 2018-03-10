@@ -1,12 +1,180 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.ladevelopers.wayv.drivers.qa.features.dashboard.DashboardFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <TextView
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ladevelopers.wayv.drivers.qa.features.dashboard.DashboardViewModel" />
+    </data>
+
+    <ViewSwitcher
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Dashboard fragment" />-->
+        android:showFirstView="@{vm.isRolesSelectionShowing}">
 
-</FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:onClick="@{() -> vm.selectRole()}"
+                android:text="Button" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.ladevelopers.wayv.drivers.qa.features.dashboard.DashboardFragment">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="24dp"
+                app:cardBackgroundColor="@color/cardview_light_background"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="0dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/dashboard_item_background">
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="0dp"
+                        android:layout_height="28dp"
+                        android:background="@color/appPurple"
+                        android:gravity="center"
+                        android:text="@{vm.warehouseName}"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/dashboard_item_background"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                        app:layout_constraintEnd_toStartOf="@+id/frameLayout1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView6"
+                        app:layout_constraintVertical_chainStyle="spread_inside">
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="match_parent"
+                            android:layout_height="28dp"
+                            android:gravity="center"
+                            android:text="@string/location"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center"
+                            android:text="@{vm.warehouseLocation}"
+                            tools:text="02000 Verbova Street, 23, Kiev, Kiev Ukraine CA" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/dashboard_item_background"
+                        android:onClick="@{() -> vm.showRolesSelection()}"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="match_parent"
+                            android:layout_height="28dp"
+                            android:gravity="center"
+                            android:text="@string/your_roles"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center"
+                            android:text="@{vm.availableRoles}"
+                            tools:text="Driver, Worker" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameLayout1"
+                        android:layout_width="100dp"
+                        android:layout_height="64dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/dashboard_item_background"
+                        android:onClick="@{() -> vm.callToWarehouse()}"
+                        app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView6"
+                        app:layout_constraintVertical_chainStyle="packed">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/call" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameLayout2"
+                        android:layout_width="100dp"
+                        android:layout_height="64dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/dashboard_item_background"
+                        android:onClick="@{() -> vm.mailToWarehouse()}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/frameLayout1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/email" />
+                    </FrameLayout>
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+        </FrameLayout>
+
+    </ViewSwitcher>
+
+
+</layout>
+
