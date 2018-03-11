@@ -12,6 +12,10 @@ import com.ladevelopers.wayv.drivers.qa.contracts.AuthService
 import com.ladevelopers.wayv.drivers.qa.helpers.ProcessIndicator
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.rx2.await
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -38,12 +42,10 @@ class DashboardViewModel @Inject constructor(
         startActivity(context, Intent.createChooser(intent, "Send email..."), null)
     }
 
-    fun selectRole() {
+    fun selectRole() = launch(UI) {
         busy.begin().use {
-            Completable.timer(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                    .subscribe{
-                        isRolesSelectionShowing.set(false)
-                    }
+            Completable.timer(1, TimeUnit.SECONDS, Schedulers.io()).await()
+            isRolesSelectionShowing.set(false)
         }
     }
 
