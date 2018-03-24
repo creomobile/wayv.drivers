@@ -21,11 +21,6 @@ fun EditText.moveCursorToEndAfterTextChanged() {
 }
 
 fun ViewSwitcher.setFadeAnimation() {
-    val inAnimation = AlphaAnimation(0f, 1f)
-    inAnimation.duration = 200
-    val outAnimation = AlphaAnimation(1f, 0f)
-    outAnimation.duration = 200
-
-    this.inAnimation = inAnimation
-    this.outAnimation = outAnimation
+    inAnimation = AlphaAnimation(0f, 1f).apply { duration = 200 }
+    outAnimation = AlphaAnimation(1f, 0f).apply { duration = 200 }
 }
