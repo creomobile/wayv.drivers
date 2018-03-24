@@ -9,6 +9,7 @@ import android.databinding.ObservableField
 import android.net.Uri
 import android.support.v4.content.ContextCompat.startActivity
 import com.ladevelopers.wayv.drivers.qa.contracts.AuthService
+import com.ladevelopers.wayv.drivers.qa.dto.EmployeeRoleDto
 import com.ladevelopers.wayv.drivers.qa.helpers.ProcessIndicator
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,7 +30,23 @@ class DashboardViewModel @Inject constructor(
     val warehouseLocation = ObservableField<String>()
     val availableRoles = ObservableField<String>()
     val isRolesSelectionShowing = ObservableBoolean(true)
+    val roleSelections = ObservableField<List<RoleSelectionViewModel>>()
     val busy = ProcessIndicator()
+
+    init {
+        authService.authInfo
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    val employee = it.value?.employee
+                    val warehouse = employee?.warehouse
+                    warehouseName.set(warehouse?.name)
+                    warehouseLocation.set(warehouse?.location?.toString())
+                    val roles = employee?.roles
+                    availableRoles.set(roles?.joinToString { it.name.capitalize() })
+                    roleSelections.set(
+                            roles?.map { RoleSelectionViewModel(it, { role -> selectRole(role) }) })
+                }
+    }
 
     fun callToWarehouse() {
         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:+1 833-843-9298"))
@@ -42,7 +59,14 @@ class DashboardViewModel @Inject constructor(
         startActivity(context, Intent.createChooser(intent, "Send email..."), null)
     }
 
-    fun selectRole() = launch(UI) {
+    private fun selectRole(role: EmployeeRoleDto) = launch(UI) {
+        busy.begin().use {
+            Completable.timer(1, TimeUnit.SECONDS, Schedulers.io()).await()
+            isRolesSelectionShowing.set(false)
+        }
+    }
+
+    fun goOffline() = launch(UI) {
         busy.begin().use {
             Completable.timer(1, TimeUnit.SECONDS, Schedulers.io()).await()
             isRolesSelectionShowing.set(false)
@@ -50,16 +74,4 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun showRolesSelection() = isRolesSelectionShowing.set(true)
-
-    init {
-        authService.authInfo
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    val employee = it.value?.employee
-                    val warehouse = employee?.warehouse
-                    warehouseName.set(warehouse?.name)
-                    warehouseLocation.set(warehouse?.location?.toString())
-                    availableRoles.set(employee?.roles?.joinToString { it.name.capitalize() })
-                }
-    }
 }

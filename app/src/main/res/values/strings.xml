@@ -20,4 +20,6 @@
     <string name="location">Location</string>
     <string name="your_roles">Your Roles</string>
     <string name="call">Call</string>
+    <string name="select_your_role">Select your role</string>
+    <string name="offline">Offline</string>
 </resources>

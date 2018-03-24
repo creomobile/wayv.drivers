@@ -6,8 +6,6 @@ import android.widget.ImageView
 import android.widget.ViewSwitcher
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.ladevelopers.wayv.drivers.qa.R
-
 
 @BindingAdapter("android:showFirstView")
 fun setShowFirstView(viewSwitcher: ViewSwitcher, showFirstView: Boolean?) {
