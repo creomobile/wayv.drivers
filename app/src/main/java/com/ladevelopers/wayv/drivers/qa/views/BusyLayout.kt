@@ -1,13 +1,14 @@
 package com.ladevelopers.wayv.drivers.qa.views
 
 import android.content.Context
+import android.os.Handler
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import com.ladevelopers.wayv.drivers.qa.R
 import kotlinx.android.synthetic.main.view_busy_layout.view.*
@@ -49,20 +50,20 @@ class BusyLayout : FrameLayout {
             progress_bar.visibility = View.VISIBLE
             backdrop_view.visibility = View.VISIBLE
             animation = AlphaAnimation(0F, 0.7F).apply {
-                interpolator = AccelerateInterpolator()
+                interpolator = DecelerateInterpolator()
                 duration = 500
                 fillAfter = true
             }
         } else {
             progress_bar.visibility = View.GONE
-            animation = AlphaAnimation(0.7F, 0F).apply { duration = 50 }
-            animation.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(p0: Animation?) {}
-                override fun onAnimationStart(p0: Animation?) {}
-                override fun onAnimationEnd(p0: Animation?) {
-                    backdrop_view.visibility = View.GONE
-                }
-            })
+            animation = AlphaAnimation(0.7F, 0F).apply {
+                duration = 50
+                fillAfter = true
+            }
+            Handler().postDelayed({
+                backdrop_view.clearAnimation()
+                backdrop_view.visibility = View.GONE
+            }, 100)
         }
 
         backdrop_view.startAnimation(animation)
