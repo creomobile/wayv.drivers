@@ -5,6 +5,7 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.ViewSwitcher
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 
 @BindingAdapter("android:showFirstView")
@@ -25,7 +26,12 @@ fun loadImageId(view: ImageView, imageId: String) {
             if (vto.isAlive) vto.removeOnPreDrawListener(this)
             val context = view.context
             val url = ImageHelper.getThumbUrl(imageId, view.width, view.height)
-            Glide.with(context).load(url).apply(RequestOptions.circleCropTransform()).into(view)
+            Glide
+                    .with(context)
+                    .load(url)
+                    .apply(RequestOptions.circleCropTransform())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(view)
             return true
         }
     })
