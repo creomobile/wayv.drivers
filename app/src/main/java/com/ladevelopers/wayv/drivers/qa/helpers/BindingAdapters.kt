@@ -22,7 +22,7 @@ fun loadImageId(view: ImageView, imageId: String) {
     val vto = view.viewTreeObserver
     view.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
         override fun onPreDraw(): Boolean {
-            vto.removeOnPreDrawListener (this)
+            if (vto.isAlive) vto.removeOnPreDrawListener(this)
             val context = view.context
             val url = ImageHelper.getThumbUrl(imageId, view.width, view.height)
             Glide.with(context).load(url).apply(RequestOptions.circleCropTransform()).into(view)
