@@ -8,12 +8,15 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.View
 import com.ladevelopers.wayv.drivers.qa.R
 import com.ladevelopers.wayv.drivers.qa.features.account.AccountFragment
 import com.ladevelopers.wayv.drivers.qa.features.dashboard.DashboardFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), android.support.v4.app.FragmentManager.OnBackStackChangedListener {
+
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,15 +28,19 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
+        actionBarDrawerToggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+        drawer_layout.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
 
-        supportFragmentManager
-                .beginTransaction()
-                .add(R.id.content_frame, DashboardFragment.newInstance())
-                .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.content_frame, DashboardFragment.newInstance())
+                    .commit()
+        } else {
+            onBackStackChanged()
+        }
 
         nav_view.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -48,15 +55,19 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        supportFragmentManager.addOnBackStackChangedListener {
-            if (supportFragmentManager.backStackEntryCount > 0) {
-                supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                toolbar.setNavigationOnClickListener { supportFragmentManager.popBackStack() }
-            } else {
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                toggle.syncState()
-                toolbar.setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
-            }
+        supportFragmentManager.addOnBackStackChangedListener(this)
+    }
+
+    override fun onBackStackChanged() {
+        val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
+
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            toolbar.setNavigationOnClickListener { supportFragmentManager.popBackStack() }
+        } else {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            actionBarDrawerToggle.syncState()
+            toolbar.setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
         }
     }
 
