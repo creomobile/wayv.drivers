@@ -1,14 +1,12 @@
 package com.ladevelopers.wayv.drivers.qa.features.main
 
 import android.app.FragmentManager
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.View
 import com.ladevelopers.wayv.drivers.qa.R
 import com.ladevelopers.wayv.drivers.qa.features.account.AccountFragment
 import com.ladevelopers.wayv.drivers.qa.features.dashboard.DashboardFragment
@@ -75,6 +73,9 @@ class MainActivity : AppCompatActivity(), android.support.v4.app.FragmentManager
         if (!supportFragmentManager.popBackStackImmediate(name, 0))
             supportFragmentManager
                     .beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.fragment_enter, R.anim.fragment_exit,
+                            R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
                     .replace(R.id.content_frame, factory())
                     .addToBackStack(name)
                     .commit()
