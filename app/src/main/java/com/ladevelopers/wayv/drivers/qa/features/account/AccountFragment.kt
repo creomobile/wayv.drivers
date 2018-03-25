@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +30,11 @@ class AccountFragment : Fragment() {
                 .get(AccountViewModel::class.java)
         binding.vm = viewModel
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.account)
     }
 
     companion object {
