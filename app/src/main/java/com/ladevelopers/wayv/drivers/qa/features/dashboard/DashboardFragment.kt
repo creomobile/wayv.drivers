@@ -38,7 +38,9 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = object : LinearLayoutManager(context) {
+                override fun canScrollVertically() = false
+            }
             adapter = RecycleListAdapter.Builder()
                     .addView<RoleSelectionViewModel>(R.layout.view_role_selection_item, BR.vm)
                     .build()
