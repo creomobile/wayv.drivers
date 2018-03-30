@@ -22,4 +22,5 @@
     <string name="call">Call</string>
     <string name="select_your_role">Select your role</string>
     <string name="offline">Offline</string>
+    <string name="icon">Icon</string>
 </resources>

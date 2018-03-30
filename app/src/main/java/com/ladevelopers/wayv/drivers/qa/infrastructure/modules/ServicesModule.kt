@@ -5,10 +5,9 @@ import com.ladevelopers.wayv.drivers.qa.contracts.*
 import com.ladevelopers.wayv.drivers.qa.services.AuthServiceImpl
 import com.ladevelopers.wayv.drivers.qa.services.ErrorHandlerImpl
 import com.ladevelopers.wayv.drivers.qa.services.LocalStorageImpl
-import dagger.*
-import okhttp3.Interceptor
+import dagger.Module
+import dagger.Provides
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory

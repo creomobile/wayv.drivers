@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ladevelopers.wayv.drivers.qa.features.Feature" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{() -> vm.start()}"
+        android:paddingBottom="12dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="12dp">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0"
+            android:contentDescription="@string/icon"
+            android:src="@{vm.imageRes}"
+            android:tint="@color/appPurple" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@{vm.title}" />
+    </LinearLayout>
+</layout>

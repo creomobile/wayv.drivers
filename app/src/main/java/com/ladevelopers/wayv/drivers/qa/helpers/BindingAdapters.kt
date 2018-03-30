@@ -14,6 +14,10 @@ fun setShowFirstView(viewSwitcher: ViewSwitcher, showFirstView: Boolean?) {
     viewSwitcher.displayedChild = if (showFirstView == false) 1 else 0
 }
 
+@BindingAdapter("android:src")
+fun bindImageResource(imageView: ImageView, resource: Int) =
+        imageView.setImageResource(resource)
+
 @BindingAdapter("android:imageUrl")
 fun loadImage(view: ImageView, imageUrl: String) {
     Glide.with(view.context).load(imageUrl).into(view)

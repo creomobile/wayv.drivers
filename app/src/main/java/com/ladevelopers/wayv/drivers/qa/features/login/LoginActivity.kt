@@ -30,7 +30,6 @@ class LoginActivity : AppCompatActivity() {
     @Inject
     lateinit var authService: AuthService
 
-    private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,32 +37,35 @@ class LoginActivity : AppCompatActivity() {
 
         (application as App).component.inject(this)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        val binding = DataBindingUtil.setContentView<ActivityLoginBinding>(
+                this, R.layout.activity_login)
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(LoginViewModel::class.java)
         binding.vm = viewModel
         binding.phoneText.moveCursorToEndAfterTextChanged()
-        binding.viewSwitcher.setFadeAnimation()
 
-        binding.viewSwitcher.inAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(p0: Animation?) {
-            }
+        viewSwitcher.apply {
+            setFadeAnimation()
+            inAnimation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(p0: Animation?) {
+                }
 
-            override fun onAnimationEnd(p0: Animation?) {
-                onViewSwitched()
-            }
+                override fun onAnimationEnd(p0: Animation?) {
+                    onViewSwitched()
+                }
 
-            override fun onAnimationStart(p0: Animation?) {
-            }
-        })
+                override fun onAnimationStart(p0: Animation?) {
+                }
+            })
+        }
 
         val listener = View.OnClickListener { setFocus(binding.codeText) }
         arrayOf(codePanel1, codePanel2, codePanel3, codePanel4).forEach {
             it.setOnClickListener(listener)
         }
 
-        setFocus(binding.phoneText)
+        setFocus(phoneText)
 
         initAuth()
     }
@@ -83,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onViewSwitched() =
-            setFocus(if (binding.viewSwitcher.displayedChild == 0) binding.phoneText else binding.codeText)
+            setFocus(if (viewSwitcher.displayedChild == 0) phoneText else codeText)
 
     override fun onBackPressed() {
         if (viewModel.showCodeEntering.get())

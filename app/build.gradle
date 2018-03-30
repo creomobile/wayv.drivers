@@ -73,5 +73,5 @@ dependencies {
         exclude group: 'glide-parent'
     }
 
-    implementation 'com.github.creomobile:lists:-SNAPSHOT'
+    implementation 'com.github.creomobile:lists:1.0.0'
 }
