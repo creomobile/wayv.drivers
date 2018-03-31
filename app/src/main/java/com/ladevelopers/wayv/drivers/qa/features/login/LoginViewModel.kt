@@ -1,5 +1,6 @@
 package com.ladevelopers.wayv.drivers.qa.features.login
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import android.databinding.ObservableBoolean
@@ -19,6 +20,7 @@ import kotlinx.coroutines.experimental.rx2.await
 import kotlinx.coroutines.experimental.rx2.awaitSingle
 import javax.inject.Inject
 
+@SuppressLint("StaticFieldLeak")
 class LoginViewModel @Inject constructor(
         private val authApiService: AuthApiService,
         private val errorHandler: ErrorHandler,
@@ -88,7 +90,7 @@ class LoginViewModel @Inject constructor(
         try {
             signinBusy.begin().use {
                 val dto = authApiService
-                        .signin(code.get(), TelephonyHelper.unformatPhone(phone.get()))
+                        .signin(code.get()!!, TelephonyHelper.unformatPhone(phone.get()))
                         .subscribeOn(Schedulers.io())
                         //.observeOn(AndroidSchedulers.mainThread())
                         .awaitSingle()
